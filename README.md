@@ -85,3 +85,19 @@ Method method_name = XposedHelpers.findMethodBestMatch(clzss, "method name", Str
 Object returnObj = method_name.invoke(clzss.getInterfaces(), "传参");
 ```
 
+### 拦截修改启动的Activity
+```java
+XposedHelpers.findAndHookMethod(Activity.class, "startActivity", Intent.class, new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                Intent originalIntent = (Intent) param.args[0];
+                String originalClassName = originalIntent.getComponent().getClassName();
+                log("hook 广告");
+                if (originalClassName.equals("com.study.learningsudoku.feiniuad.RewardVideoActivity")) {
+                    Intent newIntent = new Intent();
+                    newIntent.setClassName(originalIntent.getComponent().getPackageName(), "com.study.learningsudoku.studyhelper.StudyHelperMainActivity");
+                    param.args[0] = newIntent;
+                }
+            }
+        });
+```

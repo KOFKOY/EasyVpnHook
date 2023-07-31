@@ -1,21 +1,8 @@
 package com.wsj.easyvpnhook;
-
-
 import android.app.Activity;
-import android.app.Application;
-import android.content.Context;
-
 import android.content.Intent;
-import android.view.View;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-
-import java.lang.reflect.Method;
-
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;

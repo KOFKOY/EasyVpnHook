@@ -19,7 +19,7 @@
         <!-- 模块的简介（在框架中显示） -->
         <meta-data
             android:name="xposeddescription"
-            android:value="随便账号密码即可登录 -by 七安" />
+            android:value="easyvpn随便账号密码即可登录\n数独去广告\n打开FRP后自动打开adb" />
         <!-- 模块最低支持的Api版本 一般填54即可 -->
         <meta-data
             android:name="xposedminversion"

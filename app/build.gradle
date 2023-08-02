@@ -3,15 +3,15 @@ plugins {
 }
 
 android {
-    namespace 'com.wsj.easyvpnhook'
+    namespace 'com.wsj.easyhook'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.wsj.easyvpnhook"
+        applicationId "com.wsj.easyhook"
         minSdk 28
         targetSdk 33
         versionCode 1
-        versionName "1.0"
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

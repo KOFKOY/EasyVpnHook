@@ -1,4 +1,4 @@
-package com.wsj.easyvpnhook;
+package com.wsj.easyhook;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

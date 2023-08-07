@@ -1,18 +1,12 @@
-package com.wsj.easyvpnhook;
+package com.wsj.easyhook;
 
-import org.json.JSONObject;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

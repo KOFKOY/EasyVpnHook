@@ -6,5 +6,8 @@
         <item>cn.ktidata.redappm.sd</item>
         <item>com.tools.frp</item>
         <item>com.dragon.read</item>
+        <item>com.android.mms</item>
+        <item>android</item>
+        <item>com.android.phone</item>
     </string-array>
 </resources>

@@ -7,6 +7,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class MainHook implements IXposedHookLoadPackage {
 
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) {
+        XposedBridge.log("包名:"+lpparam.packageName);
         switch (lpparam.packageName) {
             case "com.sangfor.vpn.client.phone":
                 EvHook.hook(lpparam);
@@ -20,13 +21,6 @@ public class MainHook implements IXposedHookLoadPackage {
             case "com.dragon.read":
                 FanQieHook.hook(lpparam);
                 break;
-//            case "com.android.phone":
-//                XposedBridge.log("电话hook 成功");
-//                SmsHook.phone(lpparam);
-//                break;
-//            default:
-//                SmsHook.smsHook(lpparam);
-//                break;
         }
     }
 }

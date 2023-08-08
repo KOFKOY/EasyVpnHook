@@ -19,8 +19,6 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SHUTDOWN"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
 
 
     <application
@@ -50,5 +48,6 @@
             android:name="xposedscope"
             android:resource="@array/xposedscope"/>
     </application>
+
 
 </manifest>

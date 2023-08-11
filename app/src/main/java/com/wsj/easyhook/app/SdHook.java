@@ -1,8 +1,10 @@
-package com.wsj.easyhook;
+package com.wsj.easyhook.app;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.wsj.easyhook.IXposedHookAbstract;
 
 import java.lang.reflect.Method;
 
@@ -15,11 +17,18 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 /**
  * 数独去广告
  */
-public class SdHook{
-    public static void hook(XC_LoadPackage.LoadPackageParam lpparam) {
+public class SdHook extends IXposedHookAbstract{
+
+    public SdHook(){
+        packageName = "cn.ktidata.redappm.sd";
+        TAG = "数独";
+    }
+
+    public  void hook(XC_LoadPackage.LoadPackageParam lpparam) {
         skipAd(lpparam);
     }
-    private static void skipAd(XC_LoadPackage.LoadPackageParam lpparam) {
+
+    private  void skipAd(XC_LoadPackage.LoadPackageParam lpparam) {
         Class<?> splashActivity = XposedHelpers.findClassIfExists("com.study.learningsudoku.feiniuad.SplashActivity", lpparam.classLoader);
         XposedHelpers.findAndHookMethod(splashActivity,"onCreate", Bundle.class, new XC_MethodReplacement(){
             @Override

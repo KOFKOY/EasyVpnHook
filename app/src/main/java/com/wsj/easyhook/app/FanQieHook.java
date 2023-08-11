@@ -1,14 +1,20 @@
-package com.wsj.easyhook;
+package com.wsj.easyhook.app;
 
-import android.content.Context;
+import com.wsj.easyhook.IXposedHookAbstract;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-public class FanQieHook {
-    public static void hook(XC_LoadPackage.LoadPackageParam lpparam){
+public class FanQieHook extends IXposedHookAbstract {
+
+    public FanQieHook(){
+        packageName = "com.dragon.read";
+        TAG = "番茄小说";
+    }
+
+    public  void hook(XC_LoadPackage.LoadPackageParam lpparam){
         hookVip(lpparam);
         hookUpdate(lpparam);
         hookKillAd(lpparam);
@@ -16,8 +22,7 @@ public class FanQieHook {
         hookLuckyDog(lpparam);
     }
 
-    private static void hookVip(XC_LoadPackage.LoadPackageParam lpparam) {
-        XposedBridge.log("番茄hook vip");
+    private  void hookVip(XC_LoadPackage.LoadPackageParam lpparam) {
         XposedHelpers.findAndHookConstructor("com.dragon.read.user.model.VipInfoModel",lpparam.classLoader,String.class,String.class,String.class,boolean.class,boolean.class,int.class,new XC_MethodHook(){
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -28,12 +33,12 @@ public class FanQieHook {
                 boolean isAutoCharge = (boolean) args[3];
                 boolean isUnionVip = (boolean) args[4];
                 int union_source = (int) args[5];
-                XposedBridge.log("expireTime:" +expireTime);
-                XposedBridge.log("isVip:" +isVip);
-                XposedBridge.log("leftTime:" +leftTime);
-                XposedBridge.log("isAutoCharge:" +isAutoCharge);
-                XposedBridge.log("isUnionVip:" +isUnionVip);
-                XposedBridge.log("union_source:" +union_source);
+                log("expireTime:" +expireTime);
+                log("isVip:" +isVip);
+                log("leftTime:" +leftTime);
+                log("isAutoCharge:" +isAutoCharge);
+                log("isUnionVip:" +isUnionVip);
+                log("union_source:" +union_source);
                 args[0] = "4102415999";
                 args[1] = "1";
                 args[2] = "10000";
@@ -44,8 +49,8 @@ public class FanQieHook {
         });
     }
 
-    private static void hookUpdate(XC_LoadPackage.LoadPackageParam lpparam) {
-        XposedBridge.log("番茄hook update");
+    private  void hookUpdate(XC_LoadPackage.LoadPackageParam lpparam) {
+        log("番茄hook update");
         XposedHelpers.findAndHookMethod("com.ss.android.update.ad", lpparam.classLoader, "k", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -54,8 +59,8 @@ public class FanQieHook {
         });
     }
 
-    private static void hookKillAd(XC_LoadPackage.LoadPackageParam lpparam) {
-        XposedBridge.log("番茄hook kill ad");
+    private  void hookKillAd(XC_LoadPackage.LoadPackageParam lpparam) {
+        log("番茄hook kill ad");
         XposedHelpers.findAndHookMethod("com.dragon.read.user.h", lpparam.classLoader, "e", String.class,new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -72,7 +77,7 @@ public class FanQieHook {
         });
     }
 
-    private  static void hookPoplive(XC_LoadPackage.LoadPackageParam lpparam) {
+    private   void hookPoplive(XC_LoadPackage.LoadPackageParam lpparam) {
 //        XposedHelpers.findAndHookMethod("com.dragon.read.component.audio.impl.ui.b.a", lpparam.classLoader, "a",
 //                Context.class, String.class, String.class, new XC_MethodHook() {
 //                    @Override
@@ -81,8 +86,8 @@ public class FanQieHook {
 //                    }
 //        });
     }
-    private static void hookLuckyDog(XC_LoadPackage.LoadPackageParam lpparam) {
-        XposedBridge.log("番茄hook dog");
+    private  void hookLuckyDog(XC_LoadPackage.LoadPackageParam lpparam) {
+        log("番茄hook dog");
         XposedHelpers.findAndHookMethod("com.dragon.read.polaris.d", lpparam.classLoader, "b", new XC_MethodHook() {
             @Override
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

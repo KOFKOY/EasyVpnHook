@@ -1,26 +1,25 @@
-package com.wsj.easyhook;
+package com.wsj.easyhook.app;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import com.wsj.easyhook.IXposedHookAbstract;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 /**
  * 打开FRP后自动打开adb
  */
-public class FrpHook {
+public class FrpHook extends IXposedHookAbstract {
 
-    private static final String TAG = "FRP软件: ";
-    public static void hook(XC_LoadPackage.LoadPackageParam lpparam) {
+    public FrpHook(){
+        packageName = "com.tools.frp";
+        TAG = "FRP 软件";
+    }
+
+    public  void hook(XC_LoadPackage.LoadPackageParam lpparam) {
         XposedHelpers.findAndHookMethod("com.tools.frp.activities.MainActivity",lpparam.classLoader,"onCreate", Bundle.class,new XC_MethodHook(){
-
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 new Thread(()->{
@@ -30,7 +29,7 @@ public class FrpHook {
         });
     }
 
-    private static void adbStart(XC_MethodHook.MethodHookParam param){
+    private  void adbStart(XC_MethodHook.MethodHookParam param){
         try {
             // 执行adb tcpip命令
             Process exec = Runtime.getRuntime().exec("su -c setprop service.adb.tcp.port 5555");
@@ -43,8 +42,5 @@ public class FrpHook {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    private static void log(String str) {
-        XposedBridge.log(TAG + str);
     }
 }

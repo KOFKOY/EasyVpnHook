@@ -101,3 +101,6 @@ XposedHelpers.findAndHookMethod(Activity.class, "startActivity", Intent.class, n
             }
         });
 ```
+
+### 参考项目
+[修改网络请求](https://github.com/shuwenyouxi/XposeDemo/blob/master/app/src/main/java/com/dsw/xposeddemo/hook/ModifyOkHttpRequestHook.kt)

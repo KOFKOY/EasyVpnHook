@@ -83,6 +83,14 @@ XposedHelpers.callMethod(clzss.getInterfaces(), "method name", "args");
 Class<?> clzss = XposedHelpers.findClass("全路径的class", classLoad未测试);
 Method method_name = XposedHelpers.findMethodBestMatch(clzss, "method name", String.class);
 Object returnObj = method_name.invoke(clzss.getInterfaces(), "传参");
+
+//修改静态私有变量
+//Class<?> clazz = XposedHelpers.findClass("com.example.xposedhooktarget.HookDemo", lpparam.classLoader);
+//XposedHelpers.setStaticIntField(clazz, "staticInt", 99);
+
+//修改非静态私有变量
+//XposedHelpers.setIntField(param.thisObject, "publicInt", 199);
+
 ```
 
 ### 拦截修改启动的Activity
@@ -104,3 +112,4 @@ XposedHelpers.findAndHookMethod(Activity.class, "startActivity", Intent.class, n
 
 ### 参考项目
 [修改网络请求](https://github.com/shuwenyouxi/XposeDemo/blob/master/app/src/main/java/com/dsw/xposeddemo/hook/ModifyOkHttpRequestHook.kt)
+[Hook案例](https://juejin.cn/post/7019775360048824351)

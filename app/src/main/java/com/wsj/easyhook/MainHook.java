@@ -2,6 +2,7 @@ package com.wsj.easyhook;
 
 import com.wsj.easyhook.app.BkHook;
 import com.wsj.easyhook.app.EvHook;
+import com.wsj.easyhook.app.F555Hook;
 import com.wsj.easyhook.app.FanQieHook;
 import com.wsj.easyhook.app.FrpHook;
 import com.wsj.easyhook.app.SdHook;
@@ -24,6 +25,7 @@ public class MainHook implements IXposedHookLoadPackage {
         list.add(new SdHook());
         list.add(new ZqHook());
         list.add(new BkHook());
+        list.add(new F555Hook());
     }
 
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {

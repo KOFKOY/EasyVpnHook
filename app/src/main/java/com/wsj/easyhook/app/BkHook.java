@@ -1,6 +1,7 @@
 package com.wsj.easyhook.app;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -10,11 +11,12 @@ import android.view.ViewGroup;
 import com.wsj.easyhook.IXposedHookAbstract;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class BkHook extends IXposedHookAbstract {
-
+    int page = 0;
     public BkHook(){
         packageName = "com.picacomic.fregata";
         TAG = "哔咔";
@@ -22,6 +24,7 @@ public class BkHook extends IXposedHookAbstract {
 
     @Override
     public void hook(XC_LoadPackage.LoadPackageParam lpparam) {
+        page = 0;
         hookVip(lpparam.classLoader);
     }
 
@@ -61,5 +64,72 @@ public class BkHook extends IXposedHookAbstract {
                 }
             }
         });
+        XposedHelpers.findAndHookMethod("com.picacomic.fregata.activities.MainActivity", classLoader, "G",String.class, new XC_MethodReplacement() {
+            @Override
+            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                return null;
+            }
+        });
+        XposedHelpers.findAndHookMethod("com.picacomic.fregata.activities.MainActivity", classLoader, "bW",String.class, new XC_MethodReplacement() {
+            @Override
+            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                return null;
+            }
+        });
+        XposedHelpers.findAndHookMethod("com.picacomic.fregata.activities.MainActivity", classLoader, "F",String.class, new XC_MethodReplacement() {
+            @Override
+            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                return null;
+            }
+        });
+
+        XposedHelpers.findAndHookMethod(
+                "com.picacomic.fregata.utils.views.AlertDialogCenter",
+                classLoader,
+                "showAnnouncementAlertDialog",
+                Context.class,
+                String.class,
+                String.class,
+                String.class,
+                String.class,
+                View.OnClickListener.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        param.setResult(null);
+                    }
+                }
+        );
+
+        XposedHelpers.findAndHookMethod(
+                "com.picacomic.fregata.adapters.ComicPageRecyclerViewAdapter",
+                classLoader,
+                "onCreateViewHolder",
+                ViewGroup.class,
+                Integer.TYPE,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        Integer i = (Integer)param.args[1];
+                        if (i == 2) {
+                            param.args[1] = page;
+                        }
+                    }
+                }
+        );
+
+        XposedHelpers.findAndHookMethod(
+                "com.picacomic.fregata.adapters.a",
+                classLoader,
+                "getItemViewType",
+                Integer.TYPE,
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        Integer i = (Integer)param.getResult();
+                        param.setResult(i==2?3:param.getResult());
+                    }
+                }
+        );
     }
 }

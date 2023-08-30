@@ -1,7 +1,7 @@
 package com.wsj.easyhook;
 
 import com.wsj.easyhook.app.BkHook;
-//import com.wsj.easyhook.app.EvHook;
+import com.wsj.easyhook.app.EvHook;
 import com.wsj.easyhook.app.Dy91Hook;
 import com.wsj.easyhook.app.F555Hook;
 import com.wsj.easyhook.app.FanQieHook;
@@ -20,7 +20,7 @@ public class MainHook implements IXposedHookLoadPackage {
     List<IXposedHookAbstract> list = new ArrayList<>();
 
     public MainHook(){
-//        list.add(new EvHook());
+        list.add(new EvHook());
         list.add(new FanQieHook());
         list.add(new FrpHook());
         list.add(new SdHook());

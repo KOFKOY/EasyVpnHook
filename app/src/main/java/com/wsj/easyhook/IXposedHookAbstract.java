@@ -12,6 +12,10 @@ public abstract class IXposedHookAbstract implements IXposedHookLoadPackage, IXp
     public String packageName = "";
 
     public String TAG = "日志XposedHood";
+    /**
+     * 每次修改代码最好改下，看日志方便知道修改的代码是否生效。不改也没影响
+     */
+    public int version = 1;
 
     public void log(String log) {
         XposedBridge.log(TAG + ": " + log);
@@ -30,6 +34,7 @@ public abstract class IXposedHookAbstract implements IXposedHookLoadPackage, IXp
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         log("启用hook");
+        log("代码版本:" + version);
         hook(lpparam);
     }
 

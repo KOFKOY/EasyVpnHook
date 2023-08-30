@@ -126,8 +126,7 @@ public class BkHook extends IXposedHookAbstract {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        Integer i = (Integer)param.getResult();
-                        param.setResult(i==2?3:param.getResult());
+                        param.setResult(0);
                     }
                 }
         );

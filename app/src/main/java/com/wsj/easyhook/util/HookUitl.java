@@ -20,7 +20,19 @@ public class HookUitl {
         if (parameterTypes!=null && parameterTypes.length!=0 && (parameterTypes[parameterTypes.length - 1] instanceof XC_MethodHook)) {
             XposedHelpers.findAndHookMethod(targetClassName, classLoader, methodName, parameterTypes);
         }else {
-            XposedHelpers.findAndHookMethod(targetClassName, classLoader, methodName, parameterTypes, new PrintXcHookMethod());
+            Object[] parame;
+            if (parameterTypes == null) {
+                parame = new Object[1];
+                parame[0] = new PrintXcHookMethod();
+            }else {
+                parame = new Object[parameterTypes.length + 1];
+                for (int i = 0; i < parame.length - 1; i++) {
+                    parame[i] = parameterTypes[i];
+                }
+                parame[parame.length - 1] = new PrintXcHookMethod();
+            }
+
+            XposedHelpers.findAndHookMethod(targetClassName, classLoader, methodName, parame);
         }
     }
 
@@ -95,5 +107,14 @@ public class HookUitl {
             };
         }
         XposedHelpers.findAndHookMethod(targetClass, method.getName(), callBack);
+    }
+
+    public static void printStack(){
+        // 获取当前线程的堆栈跟踪元素
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        // 遍历堆栈跟踪元素并打印
+        for (StackTraceElement element : stackTraceElements) {
+            XposedBridge.log("方法调用: " + element.toString());
+        }
     }
 }

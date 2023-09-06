@@ -1,6 +1,7 @@
 package com.wsj.easyhook.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import com.wsj.easyhook.IXposedHookAbstract;
@@ -38,7 +39,7 @@ public class EvHook extends IXposedHookAbstract {
 
     public  void hook(XC_LoadPackage.LoadPackageParam lpparam) {
 
-        Class<?> clazz = XposedHelpers.findClass("com.sangfor.vpn.client.phone.AuthActivity", lpparam.classLoader);
+        Class<?> clazz = XposedHelpers.findClass(new String(Base64.getDecoder().decode("Y29tLnNhbmdmb3IudnBuLmNsaWVudC5waG9uZS5BdXRoQWN0aXZpdHk=")), lpparam.classLoader);
         XposedHelpers.findAndHookMethod(clazz, "a", String.class, String.class, String.class, new XC_MethodHook() {
             protected void beforeHookedMethod(final MethodHookParam param){
                 final CountDownLatch latch = new CountDownLatch(1);
@@ -87,6 +88,9 @@ public class EvHook extends IXposedHookAbstract {
                 }).start();
                 try {
                     latch.await();
+                    // 获取当前应用的上下文
+                    Context context = (Context) XposedHelpers.callMethod(param.thisObject, "getApplicationContext");
+                    Toast.makeText(context, "hook完成", Toast.LENGTH_LONG).show();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

@@ -10,13 +10,16 @@ import android.view.ViewGroup;
 
 import com.wsj.easyhook.IXposedHookAbstract;
 
+import java.lang.reflect.Method;
+import java.util.List;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class BkHook extends IXposedHookAbstract {
-    int page = 0;
+    ViewGroup viewGroup;
     public BkHook(){
         packageName = "com.picacomic.fregata";
         TAG = "哔咔";
@@ -24,7 +27,6 @@ public class BkHook extends IXposedHookAbstract {
 
     @Override
     public void hook(XC_LoadPackage.LoadPackageParam lpparam) {
-        page = 0;
         hookVip(lpparam.classLoader);
     }
 
@@ -111,12 +113,30 @@ public class BkHook extends IXposedHookAbstract {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         Integer i = (Integer)param.args[1];
-                        if (i == 2) {
-                            param.args[1] = page;
+                        if (i != 2) {
+                            viewGroup = (ViewGroup) param.args[0];
+                        }
+                        if (i == 2 && viewGroup!=null) {
+                            param.args[1] = 0;
+                            param.args[0] = viewGroup;
                         }
                     }
                 }
         );
+        XposedHelpers.findAndHookMethod(
+                "com.picacomic.fregata.adapters.ComicPageRecyclerViewAdapter",
+                classLoader,
+                "getItemViewType",
+                Integer.TYPE,
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        log("getItemViewType 传入参数:" + param.args[0]);
+                        param.setResult(0);
+                    }
+                }
+        );
+
 
         XposedHelpers.findAndHookMethod(
                 "com.picacomic.fregata.adapters.a",
@@ -127,6 +147,33 @@ public class BkHook extends IXposedHookAbstract {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         param.setResult(0);
+                    }
+                }
+        );
+        // hook  查看接口返回漫画内容
+        Class<?> comic = XposedHelpers.findClass("com.picacomic.fregata.objects.ComicPageObject", classLoader);
+        XposedHelpers.findAndHookMethod(
+                "com.picacomic.fregata.fragments.ComicViewFragment",
+                classLoader,
+                "a",
+                List.class,
+                Integer.TYPE,
+                Boolean.TYPE,
+                Boolean.TYPE,
+                new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        Object comics = param.args[0];
+                        if (comics instanceof List) {
+                            List<?> list = (List) comics;
+                            log("comic大小：" + list.size());
+                            for (Object o : list) {
+                                Method toString = o.getClass().getDeclaredMethod("toString");
+                                Object invoke = toString.invoke(o);
+                                log("打印toString" + invoke.toString());
+                            }
+                        }
+
                     }
                 }
         );

@@ -125,6 +125,31 @@ public class BkHook extends IXposedHookAbstract {
                     }
                 }
         );
+        //hook 阅读界面，去除广告
+        XposedHelpers.findAndHookMethod(
+                "com.picacomic.fregata.adapters.ComicPageRecyclerViewAdapter",
+                classLoader,
+                "getItemCount",
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        log("getItemCount 返回参数大小:" + param.getResult());
+                        Object thisObject = param.thisObject;
+                        //获取广告数量
+                        int jr = XposedHelpers.getIntField(thisObject, "jr");
+                        log("广告数量：" + jr);
+                        XposedHelpers.setIntField(thisObject, "jr", 0);
+                        //获取漫画大小
+                        Object ja = XposedHelpers.getObjectField(thisObject, "ja");
+                        if (ja instanceof List) {
+                            int size = ((List) ja).size();
+                            log("真是漫画大小：" + size);
+                            param.setResult(size);
+                        }
+                    }
+                }
+        );
+
         XposedHelpers.findAndHookMethod(
                 "com.picacomic.fregata.adapters.ComicPageRecyclerViewAdapter",
                 classLoader,

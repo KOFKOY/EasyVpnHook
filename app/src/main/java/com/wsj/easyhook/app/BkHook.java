@@ -7,24 +7,19 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.wsj.easyhook.IXposedHookAbstract;
-
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class BkHook extends IXposedHookAbstract {
-    ViewGroup viewGroup;
     public BkHook(){
         packageName = "com.picacomic.fregata";
         TAG = "哔咔";
-        version = 5;
+        version = 7;
     }
 
     @Override
@@ -74,12 +69,7 @@ public class BkHook extends IXposedHookAbstract {
                 return null;
             }
         });
-//        XposedHelpers.findAndHookMethod("com.picacomic.fregata.activities.MainActivity", classLoader, "bW",String.class, new XC_MethodReplacement() {
-//            @Override
-//            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-//                return null;
-//            }
-//        });
+
         XposedHelpers.findAndHookMethod("com.picacomic.fregata.activities.MainActivity", classLoader, "F",String.class, new XC_MethodReplacement() {
             @Override
             protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
@@ -108,75 +98,51 @@ public class BkHook extends IXposedHookAbstract {
         XposedHelpers.findAndHookMethod(
                 "com.picacomic.fregata.adapters.ComicPageRecyclerViewAdapter",
                 classLoader,
-                "onCreateViewHolder",
-                ViewGroup.class,
+                "onBindViewHolder",
+                XposedHelpers.findClass("android.support.v7.widget.RecyclerView$ViewHolder", classLoader),
                 Integer.TYPE,
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        Integer i = (Integer)param.args[1];
-                        if (i != 2) {
-                            viewGroup = (ViewGroup) param.args[0];
-                        }
-                        if (i == 2 && viewGroup!=null) {
-                            param.args[1] = 0;
-                            param.args[0] = viewGroup;
-                        }
-                    }
-                }
-        );
-        //hook 阅读界面，去除广告
-        XposedHelpers.findAndHookMethod(
-                "com.picacomic.fregata.adapters.ComicPageRecyclerViewAdapter",
-                classLoader,
-                "getItemCount",
-                new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        log("getItemCount 返回参数大小:" + param.getResult());
-                        Object thisObject = param.thisObject;
-                        //获取广告数量
-                        int jr = XposedHelpers.getIntField(thisObject, "jr");
-                        log("广告数量：" + jr);
-                        XposedHelpers.setIntField(thisObject, "jr", 0);
-                        //获取漫画大小
-                        Object ja = XposedHelpers.getObjectField(thisObject, "ja");
-                        if (ja instanceof List) {
-                            int size = ((List) ja).size();
-                            log("真是漫画大小：" + size);
-                            param.setResult(size);
+                        Object arg = param.args[0];
+                        if (arg.getClass().getSimpleName().equals("AdvertisementListViewHolder")) {
+                            View itemView = (View) XposedHelpers.getObjectField(arg, "itemView");
+                            ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) itemView.getLayoutParams();
+                            // 完全隐藏会影响分页加载的逻辑，所以保留一点，
+                            lp.height = 1;
+                            itemView.setLayoutParams(lp);
                         }
                     }
                 }
         );
 
-        XposedHelpers.findAndHookMethod(
-                "com.picacomic.fregata.adapters.ComicPageRecyclerViewAdapter",
-                classLoader,
-                "getItemViewType",
-                Integer.TYPE,
-                new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                        log("getItemViewType 传入参数:" + param.args[0]);
-                        param.setResult(0);
-                    }
-                }
-        );
+//        XposedHelpers.findAndHookMethod(
+//                "com.picacomic.fregata.adapters.ComicPageRecyclerViewAdapter",
+//                classLoader,
+//                "getItemViewType",
+//                Integer.TYPE,
+//                new XC_MethodHook() {
+//                    @Override
+//                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+////                        log("getItemViewType 传入参数:" + param.args[0]);
+//                        param.setResult(0);
+//                    }
+//                }
+//        );
 
-
-        XposedHelpers.findAndHookMethod(
-                "com.picacomic.fregata.adapters.a",
-                classLoader,
-                "getItemViewType",
-                Integer.TYPE,
-                new XC_MethodHook() {
-                    @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        param.setResult(0);
-                    }
-                }
-        );
+//
+//        XposedHelpers.findAndHookMethod(
+//                "com.picacomic.fregata.adapters.a",
+//                classLoader,
+//                "getItemViewType",
+//                Integer.TYPE,
+//                new XC_MethodHook() {
+//                    @Override
+//                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                        param.setResult(0);
+//                    }
+//                }
+//        );
         // hook  查看接口返回漫画内容
         Class<?> comic = XposedHelpers.findClass("com.picacomic.fregata.objects.ComicPageObject", classLoader);
         XposedHelpers.findAndHookMethod(

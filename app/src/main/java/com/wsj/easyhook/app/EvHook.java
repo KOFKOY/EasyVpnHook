@@ -1,7 +1,10 @@
 package com.wsj.easyhook.app;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.wsj.easyhook.IXposedHookAbstract;
@@ -15,6 +18,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
@@ -94,6 +98,29 @@ public class EvHook extends IXposedHookAbstract {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        XposedHelpers.findAndHookMethod(clazz, "onResume",new XC_MethodHook() {
+            @SuppressLint("ResourceType")
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                Activity thisObject = (Activity)param.thisObject;
+                View viewById = thisObject.findViewById(2131165304);
+                viewById.performClick();
+
+                log("自动登录" + viewById.toString());
+            }
+        });
+
+        XposedHelpers.findAndHookMethod("com.sangfor.vpn.client.phone.ConnectActivity",lpparam.classLoader, "onResume",new XC_MethodHook() {
+            @SuppressLint("ResourceType")
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                Activity thisObject = (Activity)param.thisObject;
+                View viewById = thisObject.findViewById(2131165354);
+                viewById.performClick();
+                log("自动连接" + viewById.toString());
             }
         });
     }

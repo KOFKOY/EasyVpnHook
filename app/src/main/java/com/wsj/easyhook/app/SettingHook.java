@@ -14,6 +14,7 @@ public class SettingHook extends IXposedHookAbstract {
         packageName = "com.android.settings";
         TAG = "小米设置";
         version = 5;
+        debug = false;
     }
 
     @Override

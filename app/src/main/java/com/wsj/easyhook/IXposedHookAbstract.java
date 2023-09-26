@@ -16,9 +16,12 @@ public abstract class IXposedHookAbstract implements IXposedHookLoadPackage, IXp
      * 每次修改代码最好改下，看日志方便知道修改的代码是否生效。不改也没影响
      */
     public int version = 1;
+    public boolean debug = true;
 
     public void log(String log) {
-        XposedBridge.log(TAG + ": " + log);
+        if (debug) {
+            XposedBridge.log(TAG + ": " + log);
+        }
     }
 
     @Override

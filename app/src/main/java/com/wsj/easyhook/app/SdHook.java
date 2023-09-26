@@ -22,6 +22,7 @@ public class SdHook extends IXposedHookAbstract{
     public SdHook(){
         packageName = "cn.ktidata.redappm.sd";
         TAG = "数独";
+        debug = false;
     }
 
     public  void hook(XC_LoadPackage.LoadPackageParam lpparam) {

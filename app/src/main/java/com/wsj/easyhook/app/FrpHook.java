@@ -16,6 +16,7 @@ public class FrpHook extends IXposedHookAbstract {
     public FrpHook(){
         packageName = "com.tools.frp";
         TAG = "FRP 软件";
+        debug = false;
     }
 
     public  void hook(XC_LoadPackage.LoadPackageParam lpparam) {

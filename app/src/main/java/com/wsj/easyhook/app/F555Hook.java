@@ -13,6 +13,7 @@ public class F555Hook extends IXposedHookAbstract {
     public F555Hook(){
         packageName = "com.qiqi.hhvideo";
         TAG = "影视555";
+        debug = false;
     }
 
     @Override

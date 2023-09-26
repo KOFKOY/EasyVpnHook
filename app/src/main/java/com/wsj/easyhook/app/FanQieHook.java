@@ -11,6 +11,7 @@ public class FanQieHook extends IXposedHookAbstract {
     public FanQieHook(){
         packageName = "com.dragon.read";
         TAG = "番茄小说";
+        debug = false;
     }
 
     public  void hook(XC_LoadPackage.LoadPackageParam lpparam){

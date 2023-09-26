@@ -14,6 +14,7 @@ public class ZqHook extends IXposedHookAbstract {
     public ZqHook(){
         packageName = "com.zhengnengliang.precepts";
         TAG = "正气";
+        debug = false;
     }
 
     @Override

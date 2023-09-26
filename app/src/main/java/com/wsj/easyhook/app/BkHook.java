@@ -20,6 +20,7 @@ public class BkHook extends IXposedHookAbstract {
         packageName = "com.picacomic.fregata";
         TAG = "哔咔";
         version = 7;
+        debug = false;
     }
 
     @Override

@@ -38,6 +38,7 @@ public class EvHook extends IXposedHookAbstract {
     public EvHook(){
         packageName = "com.sangfor.vpn.client.phone";
         TAG = "公司VPN";
+        debug = false;
     }
 
 

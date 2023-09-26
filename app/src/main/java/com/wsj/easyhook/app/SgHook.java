@@ -13,6 +13,7 @@ public class SgHook extends IXposedHookAbstract{
         packageName = "com.gale.sanguokill.hd";
         TAG = "三国";
         version = 2;
+        debug = false;
     }
 
     public  void hook(XC_LoadPackage.LoadPackageParam lpparam) {

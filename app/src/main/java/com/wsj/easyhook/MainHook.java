@@ -9,6 +9,7 @@ import com.wsj.easyhook.app.GsHook;
 import com.wsj.easyhook.app.SdHook;
 import com.wsj.easyhook.app.SettingHook;
 import com.wsj.easyhook.app.SgHook;
+import com.wsj.easyhook.app.YydqHook;
 import com.wsj.easyhook.app.ZqHook;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class MainHook implements IXposedHookLoadPackage {
         list.add(new SgHook());
         list.add(new SettingHook());
         list.add(new GsHook());
+        list.add(new YydqHook());
     }
 
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {

@@ -1,11 +1,7 @@
 package com.wsj.easyhook;
 
-import android.content.Context;
-import android.graphics.Canvas;
 import android.view.View;
-import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.robv.android.xposed.IXposedHookInitPackageResources;

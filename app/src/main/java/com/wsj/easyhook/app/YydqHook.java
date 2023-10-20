@@ -1,9 +1,15 @@
 package com.wsj.easyhook.app;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.wsj.easyhook.IXposedHookAbstract;
 import com.wsj.easyhook.util.HookUitl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -15,16 +21,30 @@ public class YydqHook extends IXposedHookAbstract {
         packageName = "com.le123.ysdq";
         TAG = "影视大全";
         debug = true;
+        version = 3;
     }
 
     @Override
     public void hook(XC_LoadPackage.LoadPackageParam lpparam) {
+        List<Integer> adIdList = new ArrayList<>();
+        adIdList.add(2131362947);
+        adIdList.add(2131365980);
+        adIdList.add(2131361963);
+        adIdList.add(2131363179);
+        adIdList.add(2131366735);
+        adIdList.add(2131364497);
+        adIdList.add(2131362731);
+        adIdList.add(2131365005);
+
+
         //360加固
         XposedHelpers.findAndHookMethod("com.stub.StubApp",lpparam.classLoader, "attachBaseContext", Context.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 ClassLoader loader = ((Context)param.args[0]).getClassLoader();
                 hookVip(loader);
+                initHideAd("android.widget.ImageView",loader,adIdList);
+                initHideAd("android.widget.FrameLayout",loader,adIdList);
             }
         });
     }
@@ -95,14 +115,6 @@ public class YydqHook extends IXposedHookAbstract {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 param.setResult(true);
-            }
-        });
-
-
-        XposedHelpers.findAndHookMethod(usm, "w", new XC_MethodHook() {
-            @Override
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                log("step 4 ticket是什么:" + param.getResult());
             }
         });
 

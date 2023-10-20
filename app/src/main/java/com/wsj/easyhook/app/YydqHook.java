@@ -20,7 +20,7 @@ public class YydqHook extends IXposedHookAbstract {
     public YydqHook(){
         packageName = "com.le123.ysdq";
         TAG = "影视大全";
-        debug = true;
+        debug = false;
         version = 3;
     }
 

@@ -1,12 +1,11 @@
 package com.wsj.easyhook.app;
 
+import android.app.Activity;
 import android.content.Context;
-
+import android.os.Message;
 import com.wsj.easyhook.IXposedHookAbstract;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
@@ -16,7 +15,7 @@ public class YydqHook extends IXposedHookAbstract {
         packageName = "com.le123.ysdq";
         TAG = "影视大全";
         debug = false;
-        version = 3;
+        version = 4;
     }
 
     @Override
@@ -31,6 +30,14 @@ public class YydqHook extends IXposedHookAbstract {
         adIdList.add(2131362731);
         adIdList.add(2131365005);
 
+        adIdList.add(2131366627);
+        adIdList.add(2131366626);
+        adIdList.add(2131366628);
+        adIdList.add(2131364523);
+        adIdList.add(2131363244);
+        adIdList.add(2131365186);
+        adIdList.add(2131364514);//ll_attach_ad
+
 
         //360加固
         XposedHelpers.findAndHookMethod("com.stub.StubApp",lpparam.classLoader, "attachBaseContext", Context.class, new XC_MethodHook() {
@@ -40,6 +47,9 @@ public class YydqHook extends IXposedHookAbstract {
                 hookVip(loader);
                 initHideAd("android.widget.ImageView",loader,adIdList);
                 initHideAd("android.widget.FrameLayout",loader,adIdList);
+                initHideAd("android.widget.RelativeLayout", loader, adIdList);
+                initHideAd("android.widget.TextView", loader, adIdList);
+                initHideAd("android.widget.LinearLayout", loader, adIdList);
             }
         });
     }
@@ -113,5 +123,28 @@ public class YydqHook extends IXposedHookAbstract {
             }
         });
 
+        //跳过播放视频广告
+        //2131366628  TextView
+        Class<?> attachAdManager = XposedHelpers.findClass("com.elinkway.infinitemovies.adManager.d", loader);
+        Class<?> playMedia = XposedHelpers.findClass("com.elinkway.infinitemovies.play.core.PlayMediaController", loader);
+        final Object[] attachAdManagerObject = {null};
+        XposedHelpers.findAndHookConstructor(attachAdManager,playMedia, Activity.class, new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                attachAdManagerObject[0] = param.thisObject;
+            }
+        });
+
+        XposedHelpers.findAndHookMethod("com.elinkway.infinitemovies.adManager.d$c",loader, "handleMessage", Message.class,
+        new XC_MethodHook() {
+            @Override
+            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                if (attachAdManagerObject[0] != null) {
+                    Object object = attachAdManagerObject[0];
+                    XposedHelpers.setIntField(object, "n", 0);
+                    XposedHelpers.setIntField(object, "s", 0);
+                }
+            }
+        });
     }
 }

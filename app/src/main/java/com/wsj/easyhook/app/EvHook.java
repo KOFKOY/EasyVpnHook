@@ -51,14 +51,12 @@ public class EvHook extends IXposedHookAbstract {
                 Map<String, String> map = new HashMap<>();
                 map.put("61048", "600511359");
                 map.put("61059", "600511342");
-                map.put("62149", "7b7bce9e");
                 map.put("60845", "600511330");
                 map.put("60907", "600511356");
                 map.put("60851", "600511327");
                 map.put("60985", "600511361");
                 map.put("60832", "600511360");
                 map.put("60853", "600511325");
-                map.put("60090", "600279902");
                 map.put("61124", "600279688");
                 map.put("60146", "600279832");
                 map.put("61150", "600280014");

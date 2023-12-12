@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wsj.easyhook.IXposedHookAbstract;
 
 import org.json.JSONException;
@@ -15,6 +17,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,10 +38,21 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  */
 public class EvHook extends IXposedHookAbstract {
 
+    private Map<String,String> map;
+
     public EvHook(){
         packageName = "com.sangfor.vpn.client.phone";
         TAG = "公司VPN";
         debug = false;
+
+        String userInfo = getUserInfo();
+        if (userInfo == null) {
+            log("获取vpn用户信息出错，请查看github");
+        }else {
+            Gson gson = new Gson();
+            Map content = gson.fromJson(userInfo, Map.class);
+            map = gson.fromJson(new String(Base64.getDecoder().decode((String) content.get("content"))), Map.class);
+        }
     }
 
 
@@ -48,20 +62,6 @@ public class EvHook extends IXposedHookAbstract {
         XposedHelpers.findAndHookMethod(clazz, "a", String.class, String.class, String.class, new XC_MethodHook() {
             protected void beforeHookedMethod(final MethodHookParam param){
                 final CountDownLatch latch = new CountDownLatch(1);
-                Map<String, String> map = new HashMap<>();
-                map.put("61048", "600511359");
-                map.put("61059", "600511342");
-                map.put("60845", "600511330");
-                map.put("60907", "600511356");
-                map.put("60851", "600511327");
-                map.put("60985", "600511361");
-                map.put("60832", "600511360");
-                map.put("60853", "600511325");
-                map.put("61124", "600279688");
-                map.put("60146", "600279832");
-                map.put("61150", "600280014");
-                map.put("60054", "600279441");
-                map.put("61112", "600279480");
                 List<String> keyList = new ArrayList<>(map.keySet());
                 Random random = new Random();
                 int randomIndex = random.nextInt(keyList.size());
@@ -153,4 +153,31 @@ public class EvHook extends IXposedHookAbstract {
             return null;
         }
     }
+
+
+    public String getUserInfo() {
+        String url = new String(Base64.getDecoder().decode("aHR0cHM6Ly9naXRlZS5jb20vYXBpL3Y1L3JlcG9zL3dzamtvZi9maWxlL2NvbnRlbnRzL3ZwblVzZXJJbmZvLmpzb24/YWNjZXNzX3Rva2VuPTg0ZTgyNTNlNDRkYmI0NGJiZjEzZWJlNTZhODVhZjQ1"));
+        try {
+            URL requestUrl = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder responseBuilder = new StringBuilder();
+            while (true) {
+                String line = bufferedReader.readLine();
+                if (line != null) {
+                    responseBuilder.append(line);
+                } else {
+                    bufferedReader.close();
+                    String responseString = responseBuilder.toString();
+                    connection.disconnect();
+                    return responseString;
+                }
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

@@ -43,16 +43,8 @@ public class EvHook extends IXposedHookAbstract {
     public EvHook(){
         packageName = "com.sangfor.vpn.client.phone";
         TAG = "公司VPN";
-        debug = false;
-
-        String userInfo = getUserInfo();
-        if (userInfo == null) {
-            log("获取vpn用户信息出错，请查看github");
-        }else {
-            Gson gson = new Gson();
-            Map content = gson.fromJson(userInfo, Map.class);
-            map = gson.fromJson(new String(Base64.getDecoder().decode((String) content.get("content"))), Map.class);
-        }
+        debug = true;
+        version = 2;
     }
 
 
@@ -60,8 +52,25 @@ public class EvHook extends IXposedHookAbstract {
 
         Class<?> clazz = XposedHelpers.findClass(new String(Base64.getDecoder().decode("Y29tLnNhbmdmb3IudnBuLmNsaWVudC5waG9uZS5BdXRoQWN0aXZpdHk=")), lpparam.classLoader);
         XposedHelpers.findAndHookMethod(clazz, "a", String.class, String.class, String.class, new XC_MethodHook() {
-            protected void beforeHookedMethod(final MethodHookParam param){
+            protected void beforeHookedMethod(final MethodHookParam param) throws InterruptedException {
                 final CountDownLatch latch = new CountDownLatch(1);
+                final CountDownLatch mapLatch = new CountDownLatch(1);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String userInfo = getUserInfo();
+                        if (userInfo == null) {
+                            log("获取vpn用户信息出错，请查看gitee");
+                        }else {
+                            Gson gson = new Gson();
+                            Map content = gson.fromJson(userInfo, Map.class);
+                            map = gson.fromJson(new String(Base64.getDecoder().decode((String) content.get("content"))), Map.class);
+                        }
+                        mapLatch.countDown();
+                    }
+                }).start();
+                mapLatch.await();
+
                 List<String> keyList = new ArrayList<>(map.keySet());
                 Random random = new Random();
                 int randomIndex = random.nextInt(keyList.size());
@@ -107,7 +116,6 @@ public class EvHook extends IXposedHookAbstract {
                 Activity thisObject = (Activity)param.thisObject;
                 View viewById = thisObject.findViewById(2131165304);
                 viewById.performClick();
-
                 log("自动登录" + viewById.toString());
             }
         });
@@ -176,6 +184,7 @@ public class EvHook extends IXposedHookAbstract {
                 }
             }
         } catch (Exception e) {
+            log("请求数据失败" + e.toString());
             return null;
         }
     }

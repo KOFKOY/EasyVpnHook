@@ -3,15 +3,15 @@
     <string-array name="xposedscope" >
         <!-- 这里填写模块的作用域应用的包名，可以填多个。 -->
         <item>com.sangfor.vpn.client.phone</item>
-        <item>cn.ktidata.redappm.sd</item>
+<!--        <item>cn.ktidata.redappm.sd</item>-->
         <item>com.tools.frp</item>
-        <item>com.dragon.read</item>
-        <item>com.zhengnengliang.precepts</item>
+<!--        <item>com.dragon.read</item>-->
+<!--        <item>com.zhengnengliang.precepts</item>-->
         <item>com.picacomic.fregata</item>
-        <item>com.qiqi.hhvideo</item>
-        <item>com.gale.sanguokill.hd</item>
+<!--        <item>com.qiqi.hhvideo</item>-->
+<!--        <item>com.gale.sanguokill.hd</item>-->
         <item>com.android.settings</item>
-        <item>com.GSHY.xiaolei.zishuo</item>
+<!--        <item>com.GSHY.xiaolei.zishuo</item>-->
         <item>com.le123.ysdq</item>
     </string-array>
 </resources>

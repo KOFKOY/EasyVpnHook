@@ -24,15 +24,15 @@ public class MainHook implements IXposedHookLoadPackage {
 
     public MainHook(){
         list.add(new EvHook());
-        list.add(new FanQieHook());
+//        list.add(new FanQieHook());
         list.add(new FrpHook());
-        list.add(new SdHook());
-        list.add(new ZqHook());
+//        list.add(new SdHook());
+//        list.add(new ZqHook());
         list.add(new BkHook());
-        list.add(new F555Hook());
-        list.add(new SgHook());
+//        list.add(new F555Hook());
+//        list.add(new SgHook());
         list.add(new SettingHook());
-        list.add(new GsHook());
+//        list.add(new GsHook());
         list.add(new YydqHook());
     }
 

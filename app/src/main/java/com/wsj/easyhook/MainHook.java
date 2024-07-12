@@ -1,5 +1,6 @@
 package com.wsj.easyhook;
 
+import com.wsj.easyhook.app.BiuBiuHook;
 import com.wsj.easyhook.app.BkHook;
 import com.wsj.easyhook.app.EvHook;
 import com.wsj.easyhook.app.F555Hook;
@@ -26,16 +27,17 @@ public class MainHook implements IXposedHookLoadPackage {
     public MainHook(){
         list.add(new EvHook());
 //        list.add(new FanQieHook());
-        list.add(new FrpHook());
+//        list.add(new FrpHook());
 //        list.add(new SdHook());
 //        list.add(new ZqHook());
-        list.add(new BkHook());
+//        list.add(new BkHook());
 //        list.add(new F555Hook());
 //        list.add(new SgHook());
         list.add(new SettingHook());
-        list.add(new XmlaHook());
+//        list.add(new XmlaHook());
 //        list.add(new GsHook());
 //        list.add(new YydqHook());
+//        list.add(new BiuBiuHook());
     }
 
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {

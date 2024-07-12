@@ -2,6 +2,8 @@ package com.wsj.easyhook;
 
 import android.view.View;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 import de.robv.android.xposed.IXposedHookInitPackageResources;
@@ -23,6 +25,7 @@ public abstract class IXposedHookAbstract implements IXposedHookLoadPackage, IXp
      */
     public int version = 1;
     public boolean debug = true;
+    public Gson gson = new Gson();
 
     public void log(String log) {
         if (debug) {

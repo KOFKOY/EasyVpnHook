@@ -76,6 +76,18 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".service.FrpsTileService"
+            android:icon="@drawable/frp"
+            android:label="Frps"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".service.FrpsService"/>
 
     </application>
 

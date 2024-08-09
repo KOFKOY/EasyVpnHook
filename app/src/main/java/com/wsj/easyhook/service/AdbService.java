@@ -18,7 +18,7 @@ import de.robv.android.xposed.XC_MethodHook;
 
 public class AdbService extends TileService {
 
-    private AtomicBoolean isOpen = new AtomicBoolean(false);
+    private final AtomicBoolean isOpen = new AtomicBoolean(false);
 
     @Override
     public void onClick() {

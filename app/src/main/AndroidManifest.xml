@@ -11,6 +11,8 @@
     <!-- 如果需要使用网络功能，则添加以下权限 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+
     <!-- 如果需要执行adb命令，则添加以下权限 -->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -77,9 +79,9 @@
         </service>
 
         <service
-            android:name=".service.FrpsTileService"
+            android:name=".service.FrpcService"
             android:icon="@drawable/frp"
-            android:label="Frps"
+            android:label="Frpc"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:exported="true">
             <intent-filter>

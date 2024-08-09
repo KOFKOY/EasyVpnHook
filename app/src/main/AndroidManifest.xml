@@ -87,8 +87,6 @@
             </intent-filter>
         </service>
 
-        <service android:name=".service.FrpsService"/>
-
     </application>
 
 

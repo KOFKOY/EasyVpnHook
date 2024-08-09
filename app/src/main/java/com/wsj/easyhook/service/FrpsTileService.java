@@ -40,27 +40,30 @@ public class FrpsTileService extends TileService {
 
     }
 
-    private void stopFrpc() throws IOException {
+    private void stopFrpc(){
+        try {
+            String[] cmd = {
+                    "sh",
+                    "-c",
+                    "su -c 'ps -A | grep frpc'"
+            };
+            Process process = Runtime.getRuntime().exec(cmd);
 
-        String[] cmd = {
-                "sh",
-                "-c",
-                "su -c 'ps -A | grep frpc'"
-        };
-        Process process = Runtime.getRuntime().exec(cmd);
-
-        // 执行netstat命令
+            // 执行netstat命令
 //            Process process = Runtime.getRuntime().exec(new String[]{"sh", "-c", "netstat -tuln | grep :9697"});
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        String line;
-        String result= null;
-        while ((line = reader.readLine()) != null) {
-            Log.d("wsj", "line value: "+line);
-            if (line.contains("frpc")) {
-                // 如果找到状态为LISTEN的行，说明ADB正在9697端口上运行
-                result = line;
-                break;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            String result = null;
+            while ((line = reader.readLine()) != null) {
+                Log.d("wsj", "line value: " + line);
+                if (line.contains("frpc")) {
+                    // 如果找到状态为LISTEN的行，说明ADB正在9697端口上运行
+                    result = line;
+                    break;
+                }
             }
+        }catch (Exception e){
+
         }
         //处理result 获取 pid
 
